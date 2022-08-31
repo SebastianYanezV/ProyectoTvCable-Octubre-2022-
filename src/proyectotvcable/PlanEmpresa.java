@@ -1,5 +1,6 @@
 package proyectotvcable;
 
+
 import java.util.*;
 
 public class PlanEmpresa
@@ -37,5 +38,21 @@ public class PlanEmpresa
 
     public void setValoracion(double valoracion) {
         this.valoracion = valoracion;
+    }
+
+    public ArrayList<PlanEmpresa> buscarPlan(double val, ArrayList<PlanEmpresa> array){
+        ArrayList<PlanEmpresa> a = new ArrayList<>();
+        for (PlanEmpresa plan : array) {
+            if (plan.valoracion >= val) {
+                a.add(plan);
+            }
+        }
+        if (a.isEmpty()) return null;
+        return a;
+    }
+
+    public ArrayList<PlanEmpresa> buscarPlan(ArrayList<PlanEmpresa> array){
+        if (array.isEmpty()) return null;
+        return array;
     }
 }

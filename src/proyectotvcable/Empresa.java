@@ -24,6 +24,11 @@ public class Empresa
         array.add(plan);
     }
 
+    public void addPlan(ArrayList<PlanEmpresa> array, int id, int precio, double valoracion){
+        PlanEmpresa plan = new PlanEmpresa(id, precio, valoracion);
+        array.add(plan);
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
