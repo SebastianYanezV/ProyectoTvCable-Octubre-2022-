@@ -17,7 +17,8 @@ public class Empresa
     }
 
     public ArrayList<PlanEmpresa> getListaPlanes() {
-        return listaPlanes;
+        ArrayList<PlanEmpresa> a = listaPlanes;
+        return a;
     }
 
     public void addPlan(ArrayList<PlanEmpresa> array, PlanEmpresa plan){

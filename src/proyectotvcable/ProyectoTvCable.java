@@ -10,8 +10,6 @@ public class ProyectoTvCable
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        // TODO code application logic here
-        //
         HashMap<String, Empresa> mapaEmpresas = new HashMap<>();
         llenadoDeDatos(mapaEmpresas);
         menuInicial(mapaEmpresas);
@@ -50,16 +48,15 @@ public class ProyectoTvCable
             System.out.println("2.Salir");
             opcion = Integer.parseInt(lector.readLine());
             switch (opcion) {
-                case 1:
+                case 1 -> {
                     listarEmpresas(mapaEmpresas);
                     System.out.println("Ingrese el nombre de la empresa a la que quiere acceder");
                     String nombre = lector.readLine();
                     Empresa emp = mapaEmpresas.get(nombre);
                     menuEmpresa(emp, lector);
-                    break;
-                case 2:
-                    salir = true;
-                    break;
+                }
+                case 2 -> salir = true;
+                default -> System.out.println("Numero fuera de rango, intente de nuevo.");
             }
         }
     }
@@ -67,39 +64,58 @@ public class ProyectoTvCable
     public static void menuEmpresa(Empresa empresa, BufferedReader lector) throws IOException
     {
         int opcion;
-        boolean salir = false;
-
-        while(!salir)
+        while(true)
         {
             System.out.println("1.Ver planes");
             System.out.println("2.Buscar plan");
             System.out.println("3.Agregar plan");
             System.out.println("4.Salir");
-
             opcion = Integer.parseInt(lector.readLine());
-
-            switch(opcion)
+            switch (opcion)
             {
-                case 1:
-                    listarPlanes(empresa.getListaPlanes());
-                    break;
-                case 2:
-                    //a();
-                    break;
-                case 3:
-                    agregarPlan(empresa, lector);
-                    break;
-                case 4:
+                case 1 -> listarPlanes(empresa.getListaPlanes());
+                case 2 -> menuPlanes(empresa.getListaPlanes(), lector);
+                case 3 -> agregarPlan(empresa, lector);
+                case 4 -> {return;}
+                default -> System.out.println("Numero fuera de rango, intente de nuevo.");
+            }
+        }
+    }
+
+    public static void menuPlanes(ArrayList<PlanEmpresa> planes, BufferedReader lector) throws IOException
+    {
+        int opcion;
+        while(true)
+        {
+            System.out.println("Por que parametro desea buscar?");
+            System.out.println("1.Buscar por ID");
+            System.out.println("2.Buscar por precio");
+            System.out.println("3.Buscar por valoracion");
+            System.out.println("4.Salir");
+            opcion = Integer.parseInt(lector.readLine());
+            switch (opcion)
+            {
+                case 1 -> {
+                    opcion = Integer.parseInt(lector.readLine());
+                    PlanEmpresa plan = new PlanEmpresa().buscarPlan(planes, opcion);
+                    System.out.println(plan.getId());
+                }
+                case 2 -> {}
+                    /*opcion = Integer.parseInt(lector.readLine());
+                    ArrayList<PlanEmpresa> planes1 = new ArrayList<>();*/
+                case 3 -> {}
+                    //agregarPlan(empresa, lector);
+                case 4 -> {
                     return;
+                }
             }
         }
     }
     public static void listarEmpresas(HashMap<String, Empresa> mapa){
-        int j = 0;
+        int j = 1;
         for (String i : mapa.keySet())
         {
-            j++;
-            System.out.println("Empresa "+ j + ": " + i);
+            System.out.println("Empresa "+ j++ + ": " + i);
         }
     }
     public static void listarPlanes(ArrayList<PlanEmpresa> array){
@@ -111,7 +127,6 @@ public class ProyectoTvCable
             System.out.println("-----------------------------");
         }
     }
-
     public static void agregarPlan(Empresa empresa, BufferedReader lector) throws IOException{
         System.out.println("Ingrese el ID del plan a agregar:");
         int id = Integer.parseInt(lector.readLine());
