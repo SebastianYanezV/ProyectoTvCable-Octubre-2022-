@@ -46,22 +46,85 @@ public class ProyectoTvCable
         int opcion;
         boolean salir = false;
         while (!salir) {
-            System.out.println("Seleccione su destino:");
-            System.out.println("1.Listar Empresas");
-            System.out.println("0.Salir");
+            System.out.println("1.Empresas");
+            System.out.println("2.Salir");
             opcion = Integer.parseInt(lector.readLine());
             switch (opcion) {
-                case 1 -> listarEmpresas(mapaEmpresas);
-                case 0 -> salir = true;
-                default -> System.out.println("Fuera de rango, intente de nuevo.");
+                case 1:
+                    listarEmpresas(mapaEmpresas);
+                    System.out.println("Ingrese el nombre de la empresa a la que quiere acceder");
+                    String nombre = lector.readLine();
+                    Empresa emp = mapaEmpresas.get(nombre);
+                    menuEmpresa(emp, lector);
+                    break;
+                case 2:
+                    salir = true;
+                    break;
             }
         }
     }
 
+    public static void menuEmpresa(Empresa empresa, BufferedReader lector) throws IOException
+    {
+        int opcion;
+        boolean salir = false;
+
+        while(!salir)
+        {
+            System.out.println("1.Ver planes");
+            System.out.println("2.Buscar plan");
+            System.out.println("3.Agregar plan");
+            System.out.println("4.Salir");
+
+            opcion = Integer.parseInt(lector.readLine());
+
+            switch(opcion)
+            {
+                case 1:
+                    listarPlanes(empresa.getListaPlanes());
+                    break;
+                case 2:
+                    //a();
+                    break;
+                case 3:
+                    agregarPlan(empresa, lector);
+                    break;
+                case 4:
+                    return;
+            }
+        }
+    }
     public static void listarEmpresas(HashMap<String, Empresa> mapa){
+        int j = 0;
         for (String i : mapa.keySet())
         {
-            System.out.println("Empresa: " + i);
+            j++;
+            System.out.println("Empresa "+ j + ": " + i);
         }
+    }
+    public static void listarPlanes(ArrayList<PlanEmpresa> array){
+        for (PlanEmpresa plan : array)
+        {
+            System.out.println("ID Plan: " + plan.getId());
+            System.out.println("Precio: " + plan.getPrecio());
+            System.out.println("Valoracion de usuarios: " + plan.getValoracion());
+            System.out.println("-----------------------------");
+        }
+    }
+
+    public static void agregarPlan(Empresa empresa, BufferedReader lector) throws IOException{
+        System.out.println("Ingrese el ID del plan a agregar:");
+        int id = Integer.parseInt(lector.readLine());
+        for (PlanEmpresa plan : empresa.getListaPlanes()){
+            if (plan.getId() == id){
+                System.out.println("Ya existe un plan con este ID.");
+                return;
+            }
+        }
+        System.out.println("Ingrese el precio del plan a agregar:");
+        int precio = Integer.parseInt(lector.readLine());
+        System.out.println("Ingrese la valoracion del plan a agregar:");
+        double val = Double.parseDouble(lector.readLine());
+        empresa.addPlan(empresa.getListaPlanes(), id, precio, val);
     }
 }
