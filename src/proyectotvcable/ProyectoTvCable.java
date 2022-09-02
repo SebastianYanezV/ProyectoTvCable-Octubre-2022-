@@ -10,6 +10,7 @@ public class ProyectoTvCable
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
+        //Se crea el mapa que almacenara las empresas del programa (clave: nombre de la empresa, valor: la empresa)
         HashMap<String, Empresa> mapaEmpresas = new HashMap<>();
         llenadoDeDatos(mapaEmpresas);
         menuInicial(mapaEmpresas);
@@ -17,24 +18,35 @@ public class ProyectoTvCable
 
     public static void llenadoDeDatos(HashMap<String, Empresa> mapaEmpresas)
     {
+        //Se hace un llenado de datos inicial, se crean 5 empresas, cada una con un plan disponible
         byte id = 1;
-        Empresa compania = new Empresa("Claro");
+        //Empresa compania = new Empresa("Claro");
+        Empresa compania = new Empresa();
+        compania.setNombre("Claro");
         PlanEmpresa plan = new PlanEmpresa(id, "Basico", 10000, 4);
         compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
-        compania = new Empresa("Entel");
+        //compania = new Empresa("Entel");
+        compania = new Empresa();
+        compania.setNombre("Entel");
         plan = new PlanEmpresa(id, "Basico",10000, 4);
         compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
-        compania = new Empresa("Movistar");
+        //compania = new Empresa("Movistar");
+        compania = new Empresa();
+        compania.setNombre("Movistar");
         plan = new PlanEmpresa(id, "Basico",10000, 4);
         compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
-        compania = new Empresa("WOM");
+        //compania = new Empresa("WOM");
+        compania = new Empresa();
+        compania.setNombre("WOM");
         plan = new PlanEmpresa(id, "Basico",10000, 4);
         compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
-        compania = new Empresa("VTR");
+        //compania = new Empresa("VTR");
+        compania = new Empresa();
+        compania.setNombre("VTR");
         plan = new PlanEmpresa(id, "Basico",10000, 4);
         compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
@@ -54,7 +66,19 @@ public class ProyectoTvCable
                     System.out.println("Ingrese el nombre de la empresa a la que quiere acceder");
                     String nombre = lector.readLine();
                     Empresa emp = mapaEmpresas.get(nombre);
-                    menuEmpresa(emp, lector);
+
+                    if (emp != null){
+                        menuEmpresa(emp, lector);
+                    }
+                    else{
+                        System.out.println("El nombre de esta empresa no se encuentra en nuestros registros.");
+                        do{
+                            System.out.println("Ingrese el nombre de la empresa a la que quiere acceder");
+                            nombre = lector.readLine();
+                            emp = mapaEmpresas.get(nombre);
+                        } while (emp == null);
+                        menuEmpresa(emp, lector);
+                    }
                 }
                 case 2 -> salir = true;
                 default -> System.out.println("Numero fuera de rango, intente de nuevo.");
@@ -120,6 +144,7 @@ public class ProyectoTvCable
                 case 5 -> {
                     return;
                 }
+                default -> System.out.println("Numero fuera de rango, intente de nuevo.");
             }
         }
     }
@@ -146,6 +171,7 @@ public class ProyectoTvCable
         }
     }
     public static void agregarPlan(Empresa empresa, BufferedReader lector) throws IOException{
+        PlanEmpresa nuevoPlan = new PlanEmpresa();
         System.out.println("Ingrese el ID del plan a agregar:");
         byte id = Byte.parseByte(lector.readLine());
         for (PlanEmpresa plan : empresa.getListaPlanes()){
@@ -154,13 +180,19 @@ public class ProyectoTvCable
                 return;
             }
         }
+        nuevoPlan.setId(id);
         System.out.println("Ingrese el nombre del plan a agregar:");
-        String nombre = lector.readLine();
+        //String nombre = lector.readLine();
+        nuevoPlan.setNombre(lector.readLine());
         System.out.println("Ingrese el precio del plan a agregar:");
-        int precio = Integer.parseInt(lector.readLine());
+        double precio = Double.parseDouble(lector.readLine());
+        nuevoPlan.setPrecio(precio);
+        nuevoPlan.setPrecio((int)precio);
+        //int precio = Integer.parseInt(lector.readLine());
         System.out.println("Ingrese la valoracion del plan a agregar:");
-        double val = Double.parseDouble(lector.readLine());
-        PlanEmpresa nuevoPlan = new PlanEmpresa(id, nombre, precio, val);
+        nuevoPlan.setValoracion(Double.parseDouble(lector.readLine()));
+        //double val = Double.parseDouble(lector.readLine());
+        //PlanEmpresa nuevoPlan = new PlanEmpresa(id, nombre, precio, val);
         empresa.addPlan(nuevoPlan);
     }
 
