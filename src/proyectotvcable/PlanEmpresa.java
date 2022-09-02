@@ -1,28 +1,34 @@
 package proyectotvcable;
 
 
-import java.util.*;
-
 public class PlanEmpresa
 {
-    private int id;
+    private byte id;
+    private String nombre;
     private int precio;
     private double valoracion;
 
-    public PlanEmpresa(int id, int precio, double valoracion) {
+    public PlanEmpresa(byte id, String nombre, int precio, double valoracion) {
         this.id = id;
+        this.nombre = nombre;
         this.precio = precio;
         this.valoracion = valoracion;
     }
 
-    public PlanEmpresa() {}
-
-    public int getId() {
+    public byte getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(byte id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public int getPrecio() {
@@ -33,6 +39,10 @@ public class PlanEmpresa
         this.precio = precio;
     }
 
+    public void setPrecio(double precio){
+        this.precio = (int) precio;
+    }
+
     public double getValoracion() {
         return valoracion;
     }
@@ -41,34 +51,4 @@ public class PlanEmpresa
         this.valoracion = valoracion;
     }
 
-    public ArrayList<PlanEmpresa> buscarPlan(double val, ArrayList<PlanEmpresa> array){
-        ArrayList<PlanEmpresa> a = new ArrayList<>();
-        for (PlanEmpresa plan : array) {
-            if (plan.getValoracion() >= val) {
-                a.add(plan);
-            }
-        }
-        if (a.isEmpty()) return null;
-        return a;
-    }
-
-    public ArrayList<PlanEmpresa> buscarPlan(int precio, ArrayList<PlanEmpresa> array){
-        ArrayList<PlanEmpresa> a = new ArrayList<>();
-        for (PlanEmpresa plan : array) {
-            if (plan.getPrecio() <= precio) {
-                a.add(plan);
-            }
-        }
-        if (a.isEmpty()) return null;
-        return a;
-    }
-
-    public PlanEmpresa buscarPlan(ArrayList<PlanEmpresa> array, int id){
-        for (PlanEmpresa plan : array) {
-            if (plan.getId() == id) {
-                return plan;
-            }
-        }
-        return null;
-    }
 }

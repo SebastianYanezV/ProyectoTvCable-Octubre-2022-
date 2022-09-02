@@ -17,25 +17,26 @@ public class ProyectoTvCable
 
     public static void llenadoDeDatos(HashMap<String, Empresa> mapaEmpresas)
     {
+        byte id = 1;
         Empresa compania = new Empresa("Claro");
-        PlanEmpresa plan = new PlanEmpresa(1, 10000, 4);
-        compania.addPlan(compania.getListaPlanes(), plan);
+        PlanEmpresa plan = new PlanEmpresa(id, "Basico", 10000, 4);
+        compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
         compania = new Empresa("Entel");
-        plan = new PlanEmpresa(1, 10000, 4);
-        compania.addPlan(compania.getListaPlanes(), plan);
+        plan = new PlanEmpresa(id, "Basico",10000, 4);
+        compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
         compania = new Empresa("Movistar");
-        plan = new PlanEmpresa(1, 10000, 4);
-        compania.addPlan(compania.getListaPlanes(), plan);
+        plan = new PlanEmpresa(id, "Basico",10000, 4);
+        compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
         compania = new Empresa("WOM");
-        plan = new PlanEmpresa(1, 10000, 4);
-        compania.addPlan(compania.getListaPlanes(), plan);
+        plan = new PlanEmpresa(id, "Basico",10000, 4);
+        compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
         compania = new Empresa("VTR");
-        plan = new PlanEmpresa(1, 10000, 4);
-        compania.addPlan(compania.getListaPlanes(), plan);
+        plan = new PlanEmpresa(id, "Basico",10000, 4);
+        compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
     }
 
@@ -74,7 +75,7 @@ public class ProyectoTvCable
             switch (opcion)
             {
                 case 1 -> listarPlanes(empresa.getListaPlanes());
-                case 2 -> menuPlanes(empresa.getListaPlanes(), lector);
+                case 2 -> menuPlanes(empresa, lector);
                 case 3 -> agregarPlan(empresa, lector);
                 case 4 -> {return;}
                 default -> System.out.println("Numero fuera de rango, intente de nuevo.");
@@ -82,30 +83,41 @@ public class ProyectoTvCable
         }
     }
 
-    public static void menuPlanes(ArrayList<PlanEmpresa> planes, BufferedReader lector) throws IOException
+    public static void menuPlanes(Empresa empresa, BufferedReader lector) throws IOException
     {
         int opcion;
         while(true)
         {
             System.out.println("Por que parametro desea buscar?");
             System.out.println("1.Buscar por ID");
-            System.out.println("2.Buscar por precio");
-            System.out.println("3.Buscar por valoracion");
-            System.out.println("4.Salir");
+            System.out.println("2.Buscar por nombre");
+            System.out.println("3.Buscar por precio");
+            System.out.println("4.Buscar por valoracion");
+            System.out.println("5.Salir");
             opcion = Integer.parseInt(lector.readLine());
             switch (opcion)
             {
                 case 1 -> {
-                    opcion = Integer.parseInt(lector.readLine());
-                    PlanEmpresa plan = new PlanEmpresa().buscarPlan(planes, opcion);
-                    System.out.println(plan.getId());
+                    System.out.println("Ingrese el ID a buscar:");
+                    byte id = Byte.parseByte(lector.readLine());
+                    printPlan(empresa.buscarPlan(id));
                 }
-                case 2 -> {}
-                    /*opcion = Integer.parseInt(lector.readLine());
-                    ArrayList<PlanEmpresa> planes1 = new ArrayList<>();*/
-                case 3 -> {}
-                    //agregarPlan(empresa, lector);
+                case 2 -> {
+                    System.out.println("Ingrese el nombre a buscar:");
+                    String nombre = lector.readLine();
+                    printPlan(empresa.buscarPlan(nombre));
+                }
+                case 3 -> {
+                    System.out.println("Ingrese el precio maximo a buscar:");
+                    opcion = Integer.parseInt(lector.readLine());
+                    listarPlanes(empresa.buscarPlan(opcion));
+                }
                 case 4 -> {
+                    System.out.println("Ingrese la valoracion maxima a buscar:");
+                    double val = Double.parseDouble(lector.readLine());
+                    listarPlanes(empresa.buscarPlan(val));
+                }
+                case 5 -> {
                     return;
                 }
             }
@@ -119,9 +131,15 @@ public class ProyectoTvCable
         }
     }
     public static void listarPlanes(ArrayList<PlanEmpresa> array){
+        if (array == null) {
+            System.out.println("No se han encontrado planes con esos criterios.");
+            return;
+        }
+        System.out.println("-----------------------------");
         for (PlanEmpresa plan : array)
         {
             System.out.println("ID Plan: " + plan.getId());
+            System.out.println("Nombre Plan: " + plan.getNombre());
             System.out.println("Precio: " + plan.getPrecio());
             System.out.println("Valoracion de usuarios: " + plan.getValoracion());
             System.out.println("-----------------------------");
@@ -129,17 +147,33 @@ public class ProyectoTvCable
     }
     public static void agregarPlan(Empresa empresa, BufferedReader lector) throws IOException{
         System.out.println("Ingrese el ID del plan a agregar:");
-        int id = Integer.parseInt(lector.readLine());
+        byte id = Byte.parseByte(lector.readLine());
         for (PlanEmpresa plan : empresa.getListaPlanes()){
             if (plan.getId() == id){
                 System.out.println("Ya existe un plan con este ID.");
                 return;
             }
         }
+        System.out.println("Ingrese el nombre del plan a agregar:");
+        String nombre = lector.readLine();
         System.out.println("Ingrese el precio del plan a agregar:");
         int precio = Integer.parseInt(lector.readLine());
         System.out.println("Ingrese la valoracion del plan a agregar:");
         double val = Double.parseDouble(lector.readLine());
-        empresa.addPlan(empresa.getListaPlanes(), id, precio, val);
+        PlanEmpresa nuevoPlan = new PlanEmpresa(id, nombre, precio, val);
+        empresa.addPlan(nuevoPlan);
+    }
+
+    public static void printPlan(PlanEmpresa plan){
+        if (plan == null){
+            System.out.println("No existe un plan que cumpla con el parametro ingresado.");
+            return;
+        }
+        System.out.println("-----------------------------");
+        System.out.println("ID Plan: " + plan.getId());
+        System.out.println("Nombre Plan: " + plan.getNombre());
+        System.out.println("Precio: " + plan.getPrecio());
+        System.out.println("Valoracion de usuarios: " + plan.getValoracion());
+        System.out.println("-----------------------------");
     }
 }
