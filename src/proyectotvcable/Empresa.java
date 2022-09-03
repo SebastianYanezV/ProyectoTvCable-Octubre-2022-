@@ -9,11 +9,6 @@ public class Empresa
     //ArrayList con todos los planes de la empresa
     private ArrayList<PlanEmpresa> listaPlanes;
 
-    /*public Empresa(String nombre) {
-        this.nombre = nombre;
-        this.listaPlanes = new ArrayList<>();
-    }*/
-
     public Empresa() {
         this.listaPlanes = new ArrayList<>();
     }

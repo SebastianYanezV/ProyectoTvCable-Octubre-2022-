@@ -5,7 +5,6 @@ import java.util.*;
 
 public class ProyectoTvCable
 {
-
     /**
      * @param args the command line arguments
      */
@@ -20,31 +19,26 @@ public class ProyectoTvCable
     {
         //Se hace un llenado de datos inicial, se crean 5 empresas, cada una con un plan disponible
         byte id = 1;
-        //Empresa compania = new Empresa("Claro");
         Empresa compania = new Empresa();
         compania.setNombre("Claro");
         PlanEmpresa plan = new PlanEmpresa(id, "Basico", 10000, 4);
         compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
-        //compania = new Empresa("Entel");
         compania = new Empresa();
         compania.setNombre("Entel");
         plan = new PlanEmpresa(id, "Basico",10000, 4);
         compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
-        //compania = new Empresa("Movistar");
         compania = new Empresa();
         compania.setNombre("Movistar");
         plan = new PlanEmpresa(id, "Basico",10000, 4);
         compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
-        //compania = new Empresa("WOM");
         compania = new Empresa();
         compania.setNombre("WOM");
         plan = new PlanEmpresa(id, "Basico",10000, 4);
         compania.addPlan(plan);
         mapaEmpresas.put(compania.getNombre(), compania);
-        //compania = new Empresa("VTR");
         compania = new Empresa();
         compania.setNombre("VTR");
         plan = new PlanEmpresa(id, "Basico",10000, 4);
@@ -182,17 +176,13 @@ public class ProyectoTvCable
         }
         nuevoPlan.setId(id);
         System.out.println("Ingrese el nombre del plan a agregar:");
-        //String nombre = lector.readLine();
         nuevoPlan.setNombre(lector.readLine());
         System.out.println("Ingrese el precio del plan a agregar:");
         double precio = Double.parseDouble(lector.readLine());
         nuevoPlan.setPrecio(precio);
         nuevoPlan.setPrecio((int)precio);
-        //int precio = Integer.parseInt(lector.readLine());
         System.out.println("Ingrese la valoracion del plan a agregar:");
         nuevoPlan.setValoracion(Double.parseDouble(lector.readLine()));
-        //double val = Double.parseDouble(lector.readLine());
-        //PlanEmpresa nuevoPlan = new PlanEmpresa(id, nombre, precio, val);
         empresa.addPlan(nuevoPlan);
     }
 
