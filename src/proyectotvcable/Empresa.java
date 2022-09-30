@@ -32,14 +32,18 @@ public class Empresa {
             System.out.println("1.Ver planes");
             System.out.println("2.Buscar plan");
             System.out.println("3.Agregar plan");
-            System.out.println("4.Salir");
+            System.out.println("4.Eliminar plan");
+            System.out.println("5.Modificar plan");
+            System.out.println("6.Salir");
             opcion = Integer.parseInt(lector.readLine());
             switch (opcion)
             {
                 case 1 -> getPlanes().listarPlanes(planes.getListaPlanes());
-                case 2 -> getPlanes().menuPlanes(lector);
+                case 2 -> getPlanes().menuBusquedaPlanes(lector);
                 case 3 -> getPlanes().agregarPlan(lector);
-                case 4 -> {return;}
+                case 4 -> getPlanes().menuEliminarPlanes(lector);
+                case 5 -> getPlanes().menuModificarPlanes(lector);
+                case 6 -> {return;}
                 default -> System.out.println("Numero fuera de rango, intente de nuevo.");
             }
         }

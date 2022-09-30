@@ -27,7 +27,11 @@ public class ProyectoTvCable
                     System.out.println("Ingrese el nombre de la empresa a la que quiere acceder");
                     String nombre = lector.readLine();
                     Empresa emp = mapa.getMapa().get(nombre);
-                    emp.menuEmpresa(lector);
+                    try{
+                        emp.menuEmpresa(lector);
+                    }catch (NullPointerException e){
+                        System.out.println("Nombre no encontrado.");
+                    }
                 }
                 case 2 -> salir = true;
                 default -> System.out.println("Numero fuera de rango, intente de nuevo.");

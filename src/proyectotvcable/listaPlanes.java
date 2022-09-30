@@ -59,7 +59,7 @@ public class listaPlanes {
         listaPlanes.add(plan);
     }
 
-    public void menuPlanes(BufferedReader lector) throws IOException
+    public void menuBusquedaPlanes(BufferedReader lector) throws IOException
     {
         int opcion;
         while(true)
@@ -89,13 +89,21 @@ public class listaPlanes {
                 }
                 case 3 -> {
                     System.out.println("Ingrese el precio maximo a buscar:");
-                    opcion = Integer.parseInt(lector.readLine());
-                    listarPlanes(buscarPlan(opcion));
+                    try{
+                        opcion = Integer.parseInt(lector.readLine());
+                        listarPlanes(buscarPlan(opcion));
+                    }catch (NumberFormatException e){
+                        System.out.println("Tipo de dato equivocado.");
+                    }
                 }
                 case 4 -> {
                     System.out.println("Ingrese la valoracion maxima a buscar:");
-                    double val = Double.parseDouble(lector.readLine());
-                    listarPlanes(buscarPlan(val));
+                    try{
+                        double val = Double.parseDouble(lector.readLine());
+                        listarPlanes(buscarPlan(val));
+                    }catch (NumberFormatException e){
+                        System.out.println("Tipo de dato equivocado.");
+                    }
                 }
                 case 5 -> {
                     return;
@@ -104,6 +112,129 @@ public class listaPlanes {
         }
     }
 
+    public void menuEliminarPlanes(BufferedReader lector) throws IOException
+    {
+        int opcion;
+        while(true)
+        {
+            System.out.println("Por que parametro desea buscar para eliminar?");
+            System.out.println("1.Buscar por ID");
+            System.out.println("2.Buscar por nombre");
+            System.out.println("3.Salir");
+            opcion = Integer.parseInt(lector.readLine());
+            switch (opcion)
+            {
+                case 1 -> {
+                    System.out.println("Ingrese el ID a eliminar:");
+                    try{
+                        byte id = Byte.parseByte(lector.readLine());
+                        eliminarPlan(id);
+                    }catch (NumberFormatException e){
+                        System.out.println("Tipo de dato equivocado.");
+                    }
+                }
+                case 2 -> {
+                    System.out.println("Ingrese el nombre a eliminar:");
+                    String nombre = lector.readLine();
+                    eliminarPlan(nombre);
+                }
+                case 3 -> {
+                    return;
+                }
+            }
+        }
+    }
+
+    public void menuModificarPlanes(BufferedReader lector) throws IOException
+    {
+        int opcion;
+        while(true)
+        {
+            System.out.println("Por que parametro desea buscar para modificar?");
+            System.out.println("1.Buscar por ID");
+            System.out.println("2.Buscar por nombre");
+            System.out.println("3.Salir");
+            opcion = Integer.parseInt(lector.readLine());
+            switch (opcion)
+            {
+                case 1 -> {
+                    System.out.println("Ingrese el ID del plan a modificar:");
+                    try{
+                        byte id = Byte.parseByte(lector.readLine());
+                        PlanEmpresa plan = buscarPlan(id);
+                        modificarPlan(plan, lector);
+                    }catch (NumberFormatException e){
+                        System.out.println("Tipo de dato equivocado.");
+                    }catch (NullPointerException e){
+                        System.out.println("No se encontro un plan con el ID entregado");
+                    }
+                }
+                case 2 -> {
+                    System.out.println("Ingrese el nombre a eliminar:");
+                    try{
+                        String nombre = lector.readLine();
+                        PlanEmpresa plan = buscarPlan(nombre);
+                        modificarPlan(plan, lector);
+                    }catch (NullPointerException e){
+                        System.out.println("No se encontro un plan con ese nombre.");
+                    }
+                }
+                case 3 -> {
+                    return;
+                }
+            }
+        }
+    }
+
+    public void modificarPlan(PlanEmpresa plan, BufferedReader lector) throws IOException{
+        {
+            int opcion;
+            while(true)
+            {
+                System.out.println("Que desea modificar?");
+                System.out.println("1.ID");
+                System.out.println("2.Nombre");
+                System.out.println("3.Precio");
+                System.out.println("4.Valoracion");
+                System.out.println("5.Salir");
+                opcion = Integer.parseInt(lector.readLine());
+                switch (opcion)
+                {
+                    case 1 -> {
+                        System.out.println("Ingrese el ID nuevo para el plan:");
+                        try{
+                            plan.setId(Byte.parseByte(lector.readLine()));
+                        }catch (NumberFormatException e){
+                            System.out.println("NaN, input no aceptado.");
+                        }
+                    }
+                    case 2 -> {
+                        System.out.println("Ingrese el nombre nuevo para el plan:");
+                        plan.setNombre(lector.readLine());
+                    }
+                    case 3 -> {
+                        System.out.println("Ingrese el precio nuevo para el plan:");
+                        try{
+                            plan.setPrecio(Integer.parseInt(lector.readLine()));
+                        }catch (NumberFormatException e){
+                            System.out.println("NaN, input no aceptado.");
+                        }
+                    }
+                    case 4 -> {
+                        System.out.println("Ingrese la valoracion nueva para el plan:");
+                        try{
+                            plan.setValoracion(Double.parseDouble(lector.readLine()));
+                        }catch (NumberFormatException e){
+                            System.out.println("NaN, input no aceptado.");
+                        }
+                    }
+                    case 5 -> {
+                        return;
+                    }
+                }
+            }
+        }
+    }
     public void listarPlanes(ArrayList<PlanEmpresa> a){
         if (a == null) {
             System.out.println("No se han encontrado planes con esos criterios.");
@@ -150,5 +281,27 @@ public class listaPlanes {
         System.out.println("Precio: " + plan.getPrecio());
         System.out.println("Valoracion de usuarios: " + plan.getValoracion());
         System.out.println("-----------------------------");
+    }
+
+    public void eliminarPlan(byte id){
+        PlanEmpresa plan = buscarPlan(id);
+        if (plan != null){
+            listaPlanes.remove(plan);
+            System.out.println("Plan con ID " + id + " eliminado correctamente.");
+        }
+        else{
+            System.out.println("No se encontro un plan con el ID especificado.");
+        }
+    }
+
+    public void eliminarPlan(String nombre){
+        PlanEmpresa plan = buscarPlan(nombre);
+        if (plan != null){
+            listaPlanes.remove(plan);
+            System.out.println("Plan " + nombre + " eliminado correctamente.");
+        }
+        else{
+            System.out.println("No se encontro un plan con el nombre especificado.");
+        }
     }
 }
