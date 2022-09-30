@@ -1,6 +1,5 @@
 package proyectotvcable;
 
-
 public class PlanEmpresa
 {
     private byte id;
@@ -8,12 +7,16 @@ public class PlanEmpresa
     private int precio;
     private double valoracion;
 
+    //Constructor con parametros (para el llenado inicial)
     public PlanEmpresa(byte id, String nombre, int precio, double valoracion) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.valoracion = valoracion;
     }
+
+    //Constructor sin parametros (para el llenado por consola)
+    public PlanEmpresa(){}
 
     public byte getId() {
         return id;
@@ -50,5 +53,4 @@ public class PlanEmpresa
     public void setValoracion(double valoracion) {
         this.valoracion = valoracion;
     }
-
 }
