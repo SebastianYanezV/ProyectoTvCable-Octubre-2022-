@@ -1,15 +1,15 @@
 package proyectotvcable;
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 
-public class Empresa
-{
+public class Empresa {
     private String nombre;
-    private ArrayList<PlanEmpresa> listaPlanes;
+    private listaPlanes planes;
 
     public Empresa(String nombre) {
         this.nombre = nombre;
-        this.listaPlanes = new ArrayList<>();
+        this.planes = new listaPlanes();
     }
 
     public String getNombre() {
@@ -20,52 +20,28 @@ public class Empresa
         this.nombre = nombre;
     }
 
-    public ArrayList<PlanEmpresa> getListaPlanes() {
-        ArrayList<PlanEmpresa> a = listaPlanes;
-        return a;
+    public listaPlanes getPlanes(){
+        return planes;
     }
 
-    public void addPlan(PlanEmpresa plan){
-        listaPlanes.add(plan);
-    }
-
-    public ArrayList<PlanEmpresa> buscarPlan(double val){
-        ArrayList<PlanEmpresa> a = new ArrayList<>();
-        for (PlanEmpresa plan : listaPlanes) {
-            if (plan.getValoracion() >= val) {
-                a.add(plan);
+    public void menuEmpresa(BufferedReader lector) throws IOException
+    {
+        int opcion;
+        while(true)
+        {
+            System.out.println("1.Ver planes");
+            System.out.println("2.Buscar plan");
+            System.out.println("3.Agregar plan");
+            System.out.println("4.Salir");
+            opcion = Integer.parseInt(lector.readLine());
+            switch (opcion)
+            {
+                case 1 -> getPlanes().listarPlanes(planes.getListaPlanes());
+                case 2 -> getPlanes().menuPlanes(lector);
+                case 3 -> getPlanes().agregarPlan(lector);
+                case 4 -> {return;}
+                default -> System.out.println("Numero fuera de rango, intente de nuevo.");
             }
         }
-        if (a.isEmpty()) return null;
-        return a;
-    }
-
-    public ArrayList<PlanEmpresa> buscarPlan(int precio){
-        ArrayList<PlanEmpresa> a = new ArrayList<>();
-        for (PlanEmpresa plan : listaPlanes) {
-            if (plan.getPrecio() <= precio) {
-                a.add(plan);
-            }
-        }
-        if (a.isEmpty()) return null;
-        return a;
-    }
-
-    public PlanEmpresa buscarPlan(byte id){
-        for (PlanEmpresa plan : listaPlanes) {
-            if (plan.getId() == id) {
-                return plan;
-            }
-        }
-        return null;
-    }
-
-    public PlanEmpresa buscarPlan(String nombre){
-        for (PlanEmpresa plan : listaPlanes) {
-            if (plan.getNombre().equals(nombre)) {
-                return plan;
-            }
-        }
-        return null;
     }
 }
