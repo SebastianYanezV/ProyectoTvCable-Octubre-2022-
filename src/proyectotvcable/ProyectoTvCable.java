@@ -9,8 +9,9 @@ public class ProyectoTvCable
      */
     public static void main(String[] args) throws IOException {
         mapaEmpresas mapa = new mapaEmpresas();
-        mapa.llenadoDeDatos();
+        mapa.lecturaArchivo();
         menuInicial(mapa);
+        mapa.exportarArchivo();
     }
 
     public static void menuInicial(mapaEmpresas mapa) throws IOException {
