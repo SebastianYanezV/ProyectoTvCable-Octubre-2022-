@@ -8,13 +8,15 @@ public class ProyectoTvCable
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        mapaEmpresas mapa = new mapaEmpresas();
+        PlanEmpresa a = new PlanTelefonia((byte) 1, "a", 1, 1, false, 1);
+        System.out.println(a.getClass().getSimpleName().toString());
+        MapaEmpresas mapa = new MapaEmpresas();
         mapa.lecturaArchivo();
         menuInicial(mapa);
         mapa.exportarArchivo();
     }
 
-    public static void menuInicial(mapaEmpresas mapa) throws IOException {
+    public static void menuInicial(MapaEmpresas mapa) throws IOException {
         BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
         int opcion;
         boolean salir = false;

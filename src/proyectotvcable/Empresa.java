@@ -5,11 +5,11 @@ import java.io.IOException;
 
 public class Empresa {
     private String nombre;
-    private listaPlanes planes;
+    private ListaPlanes planes;
 
     public Empresa(String nombre) {
         this.nombre = nombre;
-        this.planes = new listaPlanes();
+        this.planes = new ListaPlanes();
     }
 
     public String getNombre() {
@@ -20,7 +20,7 @@ public class Empresa {
         this.nombre = nombre;
     }
 
-    public listaPlanes getPlanes(){
+    public ListaPlanes getPlanes(){
         return planes;
     }
 

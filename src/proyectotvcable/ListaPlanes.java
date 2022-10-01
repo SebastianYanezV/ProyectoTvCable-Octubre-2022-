@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class listaPlanes {
+public class ListaPlanes {
     private ArrayList<PlanEmpresa> listaPlanes;
 
-    public listaPlanes(){
+    public ListaPlanes(){
         this.listaPlanes = new ArrayList<>();
     }
 
@@ -15,6 +15,7 @@ public class listaPlanes {
         ArrayList<PlanEmpresa> a = listaPlanes;
         return a;
     }
+
     public ArrayList<PlanEmpresa> buscarPlan(double val){
         ArrayList<PlanEmpresa> a = new ArrayList<>();
         for (PlanEmpresa plan : listaPlanes) {
@@ -243,11 +244,34 @@ public class listaPlanes {
         System.out.println("-----------------------------");
         for (PlanEmpresa plan : a)
         {
-            System.out.println("ID Plan: " + plan.getId());
-            System.out.println("Nombre Plan: " + plan.getNombre());
-            System.out.println("Precio: " + plan.getPrecio());
-            System.out.println("Valoracion de usuarios: " + plan.getValoracion());
-            System.out.println("-----------------------------");
+            //System.out.println(plan.getClass().getSimpleName());
+            if (plan.getClass().getSimpleName().equals("PlanCable")){
+                PlanCable planAux = (PlanCable) plan;
+                System.out.println("ID Plan: " + planAux.getId());
+                System.out.println("Nombre Plan: " + planAux.getNombre());
+                System.out.println("Precio: " + planAux.getPrecio());
+                System.out.println("Valoracion de usuarios: " + planAux.getValoracion());
+                if (planAux.isHd()){
+                    System.out.println("Incluye canales en HD");
+                }else{
+                    System.out.println("No incluye canales en HD");
+                }
+                System.out.println("Cantidad de Canales: " + planAux.getCanales());
+                System.out.println("-----------------------------");
+            }else if (plan.getClass().getSimpleName().equals("PlanTelefonia")){
+                PlanTelefonia planAux = (PlanTelefonia) plan;
+                System.out.println("ID Plan: " + planAux.getId());
+                System.out.println("Nombre Plan: " + planAux.getNombre());
+                System.out.println("Precio: " + planAux.getPrecio());
+                System.out.println("Valoracion de usuarios: " + planAux.getValoracion());
+                if (planAux.isRoaming()){
+                    System.out.println("Incluye Roaming Ilimitado");
+                }else{
+                    System.out.println("No incluye Roaming Ilimitado");
+                }
+                System.out.println("Minutos: " + planAux.getMinutos());
+                System.out.println("-----------------------------");
+            }
         }
     }
 
