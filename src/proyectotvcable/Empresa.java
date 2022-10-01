@@ -40,7 +40,13 @@ public class Empresa {
             {
                 case 1 -> getPlanes().listarPlanes(planes.getListaPlanes());
                 case 2 -> getPlanes().menuBusquedaPlanes(lector);
-                case 3 -> getPlanes().agregarPlan(lector);
+                case 3 -> {
+                    try{
+                        getPlanes().agregarPlan(lector);
+                    }catch(IDAlreadyInUseException e){
+                        System.out.println("Ocurrio un error: " + e.getMessage());
+                    }
+                }
                 case 4 -> getPlanes().menuEliminarPlanes(lector);
                 case 5 -> getPlanes().menuModificarPlanes(lector);
                 case 6 -> {return;}

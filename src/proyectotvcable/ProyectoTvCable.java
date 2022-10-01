@@ -8,8 +8,6 @@ public class ProyectoTvCable
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        PlanEmpresa a = new PlanTelefonia((byte) 1, "a", 1, 1, false, 1);
-        System.out.println(a.getClass().getSimpleName().toString());
         MapaEmpresas mapa = new MapaEmpresas();
         mapa.lecturaArchivo();
         menuInicial(mapa);

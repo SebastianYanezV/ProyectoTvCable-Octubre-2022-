@@ -244,44 +244,25 @@ public class ListaPlanes {
         System.out.println("-----------------------------");
         for (PlanEmpresa plan : a)
         {
-            //System.out.println(plan.getClass().getSimpleName());
+            System.out.println("-----------------------------");
             if (plan.getClass().getSimpleName().equals("PlanCable")){
                 PlanCable planAux = (PlanCable) plan;
-                System.out.println("ID Plan: " + planAux.getId());
-                System.out.println("Nombre Plan: " + planAux.getNombre());
-                System.out.println("Precio: " + planAux.getPrecio());
-                System.out.println("Valoracion de usuarios: " + planAux.getValoracion());
-                if (planAux.isHd()){
-                    System.out.println("Incluye canales en HD");
-                }else{
-                    System.out.println("No incluye canales en HD");
-                }
-                System.out.println("Cantidad de Canales: " + planAux.getCanales());
+                planAux.getPlan();
                 System.out.println("-----------------------------");
             }else if (plan.getClass().getSimpleName().equals("PlanTelefonia")){
                 PlanTelefonia planAux = (PlanTelefonia) plan;
-                System.out.println("ID Plan: " + planAux.getId());
-                System.out.println("Nombre Plan: " + planAux.getNombre());
-                System.out.println("Precio: " + planAux.getPrecio());
-                System.out.println("Valoracion de usuarios: " + planAux.getValoracion());
-                if (planAux.isRoaming()){
-                    System.out.println("Incluye Roaming Ilimitado");
-                }else{
-                    System.out.println("No incluye Roaming Ilimitado");
-                }
-                System.out.println("Minutos: " + planAux.getMinutos());
+                planAux.getPlan();
                 System.out.println("-----------------------------");
             }
         }
     }
 
-    public void agregarPlan(BufferedReader lector) throws IOException{
+    public void agregarPlan(BufferedReader lector) throws IOException, IDAlreadyInUseException {
         System.out.println("Ingrese el ID del plan a agregar:");
         byte id = Byte.parseByte(lector.readLine());
         for (PlanEmpresa plan : this.listaPlanes){
             if (plan.getId() == id){
-                System.out.println("Ya existe un plan con este ID.");
-                return;
+                throw new IDAlreadyInUseException();
             }
         }
         System.out.println("Ingrese el nombre del plan a agregar:");

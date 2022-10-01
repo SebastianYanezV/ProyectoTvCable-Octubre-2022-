@@ -15,9 +15,6 @@ public class PlanEmpresa
         this.valoracion = valoracion;
     }
 
-    //Constructor sin parametros (para el llenado por consola)
-    public PlanEmpresa(){}
-
     public byte getId() {
         return id;
     }
@@ -52,5 +49,12 @@ public class PlanEmpresa
 
     public void setValoracion(double valoracion) {
         this.valoracion = valoracion;
+    }
+
+    public void getPlan(){
+        System.out.println("ID Plan: " + id);
+        System.out.println("Nombre Plan: " + nombre);
+        System.out.println("Precio: " + precio);
+        System.out.println("Valoracion de usuarios: " + valoracion);
     }
 }

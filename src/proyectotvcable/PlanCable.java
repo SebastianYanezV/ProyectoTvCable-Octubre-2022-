@@ -25,4 +25,14 @@ public class PlanCable extends PlanEmpresa{
     public int getCanales() {
         return canales;
     }
+
+    public void getPlan(){
+        super.getPlan();
+        if (isHd()){
+            System.out.println("Incluye canales en HD");
+        }else{
+            System.out.println("No incluye canales en HD");
+        }
+        System.out.println("Cantidad de Canales: " + getCanales());
+    }
 }

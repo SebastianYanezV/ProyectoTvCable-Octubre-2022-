@@ -25,4 +25,14 @@ public class PlanTelefonia extends PlanEmpresa{
     public int getMinutos() {
         return minutos;
     }
+
+    public void getPlan(){
+        super.getPlan();
+        if (isRoaming()){
+            System.out.println("Incluye Roaming Ilimitado");
+        }else{
+            System.out.println("No incluye Roaming Ilimitado");
+        }
+        System.out.println("Minutos: " + getMinutos());
+    }
 }

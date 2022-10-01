@@ -81,8 +81,7 @@ public class MapaEmpresas {
                     }
                 }
             }catch(FileNotFoundException ee){
-                System.out.println("Archivo Predeterminado no fue encontrado, abortando programa...");
-                System.exit(1);
+                throw new DefaultFileMissingException();
             }
         }
     }
