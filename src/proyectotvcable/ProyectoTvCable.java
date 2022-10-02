@@ -1,3 +1,12 @@
+/*
+Integrantes:
+    Reinaldo Foitzick
+	Sebastián Yáñez
+	Felipe Zepeda
+
+Fecha: 2 de Octubre de 2022
+ */
+
 package proyectotvcable;
 
 import java.io.*;
@@ -14,6 +23,7 @@ public class ProyectoTvCable
         mapa.exportarArchivo();
     }
 
+    //Funcion para entrar a una empresa especifica dentro del mapa
     public static void menuInicial(MapaEmpresas mapa) throws IOException {
         BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
         int opcion;

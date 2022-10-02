@@ -18,73 +18,59 @@ public class MapaEmpresas {
         return m;
     }
 
+    //Funcion para mostrar todas las empresas disponibles en la aplicacion
+    public void listarEmpresas(){
+        int j = 1;
+        for (String i : this.mapaEmpresas.keySet())
+        {
+            System.out.println("Empresa "+ j++ + ": " + i);
+        }
+    }
+
+    //Funcion para importar un archivo. El usuario ingresa un archivo, si este no existe, se utiliza el predeterminado
     public void lecturaArchivo() throws IOException {
         BufferedReader lectorNombre = new BufferedReader(new InputStreamReader(System.in));
         String localDir = System.getProperty("user.dir");
         System.out.println("Ingrese nombre de archivo a importar (predeterminado: Planes.csv): ");
         File file = new File(localDir + "\\" + lectorNombre.readLine());
         try{
-            BufferedReader lector = new BufferedReader((new FileReader(file)));
-            String linea;
-            while ((linea = lector.readLine()) != null) {
-                String[] datos = linea.split(",");
-                Empresa busqueda = this.mapaEmpresas.get(datos[0]);
-                if (busqueda == null){
-                    Empresa emp = new Empresa(datos[0]);
-                    if (datos[5].equals("Telefonia")){
-                        PlanEmpresa plan = new PlanTelefonia(Byte.parseByte(datos[1]), datos[2], Integer.parseInt(datos[3]), Double.parseDouble(datos[4]), Boolean.parseBoolean(datos[6]), Integer.parseInt(datos[7]));
-                        emp.getPlanes().addPlan(plan);
-                    }else if (datos[5].equals("Cable")){
-                        PlanEmpresa plan = new PlanCable(Byte.parseByte(datos[1]), datos[2], Integer.parseInt(datos[3]), Double.parseDouble(datos[4]), Boolean.parseBoolean(datos[6]), Integer.parseInt(datos[7]));
-                        emp.getPlanes().addPlan(plan);
-                    }
-                    this.mapaEmpresas.put(datos[0], emp);
-                }
-                else{
-                    if (datos[5].equals("Telefonia")){
-                        PlanEmpresa plan = new PlanTelefonia(Byte.parseByte(datos[1]), datos[2], Integer.parseInt(datos[3]), Double.parseDouble(datos[4]), Boolean.parseBoolean(datos[6]), Integer.parseInt(datos[7]));
-                        busqueda.getPlanes().addPlan(plan);
-                    }else if (datos[5].equals("Cable")){
-                        PlanEmpresa plan = new PlanCable(Byte.parseByte(datos[1]), datos[2], Integer.parseInt(datos[3]), Double.parseDouble(datos[4]), Boolean.parseBoolean(datos[6]), Integer.parseInt(datos[7]));
-                        busqueda.getPlanes().addPlan(plan);
-                    }
-                }
-            }
-            lector.close();
+            leerArchivo(file);
         }catch (FileNotFoundException e){
             System.out.println("Archivo no encontrado, intentando importar predeterminado");
             try{
                 file = new File(localDir + "\\Planes.csv");
-                BufferedReader lector = new BufferedReader((new FileReader(file)));
-                String linea;
-                while ((linea = lector.readLine()) != null) {
-                    String[] datos = linea.split(",");
-                    Empresa busqueda = this.mapaEmpresas.get(datos[0]);
-                    if (busqueda == null){
-                        Empresa emp = new Empresa(datos[0]);
-                        if (datos[5].equals("Telefonia")){
-                            PlanEmpresa plan = new PlanTelefonia(Byte.parseByte(datos[1]), datos[2], Integer.parseInt(datos[3]), Double.parseDouble(datos[4]), Boolean.parseBoolean(datos[6]), Integer.parseInt(datos[7]));
-                            emp.getPlanes().addPlan(plan);
-                        }else if (datos[5].equals("Cable")){
-                            PlanEmpresa plan = new PlanCable(Byte.parseByte(datos[1]), datos[2], Integer.parseInt(datos[3]), Double.parseDouble(datos[4]), Boolean.parseBoolean(datos[6]), Integer.parseInt(datos[7]));
-                            emp.getPlanes().addPlan(plan);
-                        }
-                        this.mapaEmpresas.put(datos[0], emp);
-                    }
-                    else{
-                        if (datos[5].equals("Telefonia")){
-                            PlanEmpresa plan = new PlanTelefonia(Byte.parseByte(datos[1]), datos[2], Integer.parseInt(datos[3]), Double.parseDouble(datos[4]), Boolean.parseBoolean(datos[6]), Integer.parseInt(datos[7]));
-                            busqueda.getPlanes().addPlan(plan);
-                        }else if (datos[5].equals("Cable")){
-                            PlanEmpresa plan = new PlanCable(Byte.parseByte(datos[1]), datos[2], Integer.parseInt(datos[3]), Double.parseDouble(datos[4]), Boolean.parseBoolean(datos[6]), Integer.parseInt(datos[7]));
-                            busqueda.getPlanes().addPlan(plan);
-                        }
-                    }
-                }
-                lector.close();
+                leerArchivo(file);
             }catch(FileNotFoundException ee){
                 throw new DefaultFileMissingException();
             }
+        }
+    }
+// Funcion que cumple la función de leer el archivo en sí.
+    public void leerArchivo(File file) throws IOException {
+        BufferedReader lector = new BufferedReader((new FileReader(file)));
+        String linea;
+        while ((linea = lector.readLine()) != null) {
+            String[] datos = linea.split(",");
+            Empresa busqueda = this.mapaEmpresas.get(datos[0]);
+            if (busqueda == null){
+                Empresa emp = new Empresa(datos[0]);
+                checkTipoPlan(datos, emp);
+                this.mapaEmpresas.put(datos[0], emp);
+            }
+            else{
+                checkTipoPlan(datos, busqueda);
+            }
+        }
+        lector.close();
+    }
+// Función que se encarga de verificar si el tipo de plan agregado es de telefonía o cable.
+    public void checkTipoPlan(String[] datos, Empresa emp) {
+        if (datos[5].equals("Telefonia")){
+            PlanEmpresa plan = new PlanTelefonia(Byte.parseByte(datos[1]), datos[2], Integer.parseInt(datos[3]), Double.parseDouble(datos[4]), Boolean.parseBoolean(datos[6]), Integer.parseInt(datos[7]));
+            emp.getPlanes().addPlan(plan);
+        }else if (datos[5].equals("Cable")){
+            PlanEmpresa plan = new PlanCable(Byte.parseByte(datos[1]), datos[2], Integer.parseInt(datos[3]), Double.parseDouble(datos[4]), Boolean.parseBoolean(datos[6]), Integer.parseInt(datos[7]));
+            emp.getPlanes().addPlan(plan);
         }
     }
 
@@ -103,6 +89,7 @@ public class MapaEmpresas {
         return escapedData;
     }
 
+    //Funcion para exportar los datos de la aplicacion a un archivo designado por el usuario
     public void exportarArchivo() throws IOException{
         BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Ingrese nombre del archivo al cual exportar: ");
@@ -141,14 +128,6 @@ public class MapaEmpresas {
             lineas.stream().map(this::convertToCSV).forEach(pw::println);
         }
         assert(csv.exists());
-    }
-
-    public void listarEmpresas(){
-        int j = 1;
-        for (String i : this.mapaEmpresas.keySet())
-        {
-            System.out.println("Empresa "+ j++ + ": " + i);
-        }
     }
 
     public void exportarReporte() throws IOException {

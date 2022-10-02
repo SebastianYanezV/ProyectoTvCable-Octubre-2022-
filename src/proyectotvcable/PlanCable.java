@@ -26,6 +26,7 @@ public class PlanCable extends PlanEmpresa{
         return canales;
     }
 
+    //Funcion para mostrar los datos del plan, muestra sus datos generales (tipo PlanEmpresa) y particulares
     public void getPlan(){
         super.getPlan();
         if (isHd()){

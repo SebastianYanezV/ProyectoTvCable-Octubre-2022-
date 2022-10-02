@@ -26,6 +26,7 @@ public class PlanTelefonia extends PlanEmpresa{
         return minutos;
     }
 
+    //Funcion para mostrar los datos del plan, muestra sus datos generales (tipo PlanEmpresa) y particulares
     public void getPlan(){
         super.getPlan();
         if (isRoaming()){

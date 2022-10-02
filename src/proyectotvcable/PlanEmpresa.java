@@ -51,6 +51,7 @@ public class PlanEmpresa
         this.valoracion = valoracion;
     }
 
+    //Funcion para mostrar los datos del plan
     public void getPlan(){
         System.out.println("ID Plan: " + id);
         System.out.println("Nombre Plan: " + nombre);

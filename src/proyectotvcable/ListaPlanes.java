@@ -16,50 +16,34 @@ public class ListaPlanes {
         return a;
     }
 
-    public ArrayList<PlanEmpresa> buscarPlan(double val){
-        ArrayList<PlanEmpresa> a = new ArrayList<>();
-        for (PlanEmpresa plan : listaPlanes) {
-            if (plan.getValoracion() >= val) {
-                a.add(plan);
-            }
-        }
-        if (a.isEmpty()) return null;
-        return a;
-    }
-
-    public ArrayList<PlanEmpresa> buscarPlan(int precio){
-        ArrayList<PlanEmpresa> a = new ArrayList<>();
-        for (PlanEmpresa plan : listaPlanes) {
-            if (plan.getPrecio() <= precio) {
-                a.add(plan);
-            }
-        }
-        if (a.isEmpty()) return null;
-        return a;
-    }
-
-    public PlanEmpresa buscarPlan(byte id){
-        for (PlanEmpresa plan : listaPlanes) {
-            if (plan.getId() == id) {
-                return plan;
-            }
-        }
-        return null;
-    }
-
-    public PlanEmpresa buscarPlan(String nombre){
-        for (PlanEmpresa plan : listaPlanes) {
-            if (plan.getNombre().equals(nombre)) {
-                return plan;
-            }
-        }
-        return null;
-    }
-
     public void addPlan(PlanEmpresa plan) {
         listaPlanes.add(plan);
     }
 
+    //Funcion para mostrar TODOS los planes que dispone la empresa
+    public void listarPlanes(ArrayList<PlanEmpresa> a){
+        if (a == null) {
+            System.out.println("No se han encontrado planes con esos criterios.");
+            return;
+        }
+        System.out.println("-----------------------------");
+        for (PlanEmpresa plan : a)
+        {
+            checkTipoPlanPrint(plan);
+        }
+    }
+    // Funcion simple que checkea el tipo de plan para las funciones de print.
+    public void checkTipoPlanPrint(PlanEmpresa plan) {
+        if (plan.getClass().getSimpleName().equals("PlanCable")){
+            PlanCable planAux = (PlanCable) plan;
+            planAux.getPlan();
+            System.out.println("-----------------------------");
+        }else if (plan.getClass().getSimpleName().equals("PlanTelefonia")){
+            PlanTelefonia planAux = (PlanTelefonia) plan;
+            planAux.getPlan();
+            System.out.println("-----------------------------");
+        }
+    }
     public void menuBusquedaPlanes(BufferedReader lector) throws IOException
     {
         int opcion;
@@ -113,6 +97,110 @@ public class ListaPlanes {
         }
     }
 
+    //Funcion para buscar TODOS los planes que tienen una valoracion igual o mejor a la ingresada
+    public ArrayList<PlanEmpresa> buscarPlan(double val){
+        ArrayList<PlanEmpresa> a = new ArrayList<>();
+        for (PlanEmpresa plan : listaPlanes) {
+            if (plan.getValoracion() >= val) {
+                a.add(plan);
+            }
+        }
+        if (a.isEmpty()) return null;
+        return a;
+    }
+
+    //Funcion para buscar TODOS los planes que tienen un precio igual o menor al ingresado
+    public ArrayList<PlanEmpresa> buscarPlan(int precio){
+        ArrayList<PlanEmpresa> a = new ArrayList<>();
+        for (PlanEmpresa plan : listaPlanes) {
+            if (plan.getPrecio() <= precio) {
+                a.add(plan);
+            }
+        }
+        if (a.isEmpty()) return null;
+        return a;
+    }
+
+    //Funcion para buscar un plan especifico por ID
+    public PlanEmpresa buscarPlan(byte id){
+        for (PlanEmpresa plan : listaPlanes) {
+            if (plan.getId() == id) {
+                return plan;
+            }
+        }
+        return null;
+    }
+
+    //Funcion para buscar un plan especifico por nombre
+    public PlanEmpresa buscarPlan(String nombre){
+        for (PlanEmpresa plan : listaPlanes) {
+            if (plan.getNombre().equals(nombre)) {
+                return plan;
+            }
+        }
+        return null;
+    }
+
+    //Funcion para agregar un plan creado por el usuario
+    public void agregarPlan(BufferedReader lector) throws IOException, IDAlreadyInUseException {
+        System.out.println("Ingrese el ID del plan a agregar:");
+        byte id = Byte.parseByte(lector.readLine());
+        for (PlanEmpresa plan : this.listaPlanes){
+            if (plan.getId() == id){
+                throw new IDAlreadyInUseException();
+            }
+        }
+        System.out.println("Ingrese el nombre del plan a agregar:");
+        String nombre = lector.readLine();
+        System.out.println("Ingrese el precio del plan a agregar:");
+        int precio = Integer.parseInt(lector.readLine());
+        System.out.println("Ingrese la valoracion del plan a agregar:");
+        double val = Double.parseDouble(lector.readLine());
+        boolean finalizado = false;
+        while (!finalizado){
+            System.out.println("Ingrese el tipo de plan a agregar, Cable (1) o Telefonia (2): ");
+            switch (Integer.parseInt(lector.readLine())) {
+                case 1 -> {
+                    System.out.println("Ingrese si el plan incluye canales HD, Si (S) o No (N)");
+                    boolean hd;
+                    String chk = lector.readLine();
+                    if (chk.equalsIgnoreCase("N")) {
+                        hd = false;
+                    } else if (chk.equalsIgnoreCase("S")) {
+                        hd = true;
+                    } else {
+                        System.out.println("Input invalido, predeterminando a falso");
+                        hd = false;
+                    }
+                    System.out.println("Ingrese la cantidad de canales que incluye el plan: ");
+                    int canales = Integer.parseInt(lector.readLine());
+                    PlanCable nuevoPlan = new PlanCable(id, nombre, precio, val, hd, canales);
+                    addPlan(nuevoPlan);
+                    finalizado = true;
+                }
+                case 2 -> {
+                    System.out.println("Ingrese si el plan incluye roaming ilimitado, Si (S) o No (N)");
+                    boolean roaming;
+                    String chk = lector.readLine();
+                    if (chk.equalsIgnoreCase("N")) {
+                        roaming = false;
+                    } else if (chk.equalsIgnoreCase("S")) {
+                        roaming = true;
+                    } else {
+                        System.out.println("Input invalido, predeterminando a falso");
+                        roaming = false;
+                    }
+                    System.out.println("Ingrese la cantidad de minutos que incluye el plan: ");
+                    int minutos = Integer.parseInt(lector.readLine());
+                    PlanTelefonia nuevoPlan = new PlanTelefonia(id, nombre, precio, val, roaming, minutos);
+                    addPlan(nuevoPlan);
+                    finalizado = true;
+                }
+                default -> System.out.println("Valor fuera de rango, intente de nuevo.");
+            }
+        }
+    }
+
     public void menuEliminarPlanes(BufferedReader lector) throws IOException
     {
         int opcion;
@@ -143,6 +231,30 @@ public class ListaPlanes {
                     return;
                 }
             }
+        }
+    }
+
+    //Funcion para eliminar un plan con un ID especifico
+    public void eliminarPlan(byte id){
+        PlanEmpresa plan = buscarPlan(id);
+        if (plan != null){
+            listaPlanes.remove(plan);
+            System.out.println("Plan con ID " + id + " eliminado correctamente.");
+        }
+        else{
+            System.out.println("No se encontro un plan con el ID especificado.");
+        }
+    }
+
+    //Funcion para eliminar un plan con un nombre especifico
+    public void eliminarPlan(String nombre){
+        PlanEmpresa plan = buscarPlan(nombre);
+        if (plan != null){
+            listaPlanes.remove(plan);
+            System.out.println("Plan " + nombre + " eliminado correctamente.");
+        }
+        else{
+            System.out.println("No se encontro un plan con el nombre especificado.");
         }
     }
 
@@ -279,121 +391,14 @@ public class ListaPlanes {
             }
         }
     }
-    public void listarPlanes(ArrayList<PlanEmpresa> a){
-        if (a == null) {
-            System.out.println("No se han encontrado planes con esos criterios.");
-            return;
-        }
-        System.out.println("-----------------------------");
-        for (PlanEmpresa plan : a)
-        {
-            if (plan.getClass().getSimpleName().equals("PlanCable")){
-                PlanCable planAux = (PlanCable) plan;
-                planAux.getPlan();
-                System.out.println("-----------------------------");
-            }else if (plan.getClass().getSimpleName().equals("PlanTelefonia")){
-                PlanTelefonia planAux = (PlanTelefonia) plan;
-                planAux.getPlan();
-                System.out.println("-----------------------------");
-            }
-        }
-    }
 
-    public void agregarPlan(BufferedReader lector) throws IOException, IDAlreadyInUseException {
-        System.out.println("Ingrese el ID del plan a agregar:");
-        byte id = Byte.parseByte(lector.readLine());
-        for (PlanEmpresa plan : this.listaPlanes){
-            if (plan.getId() == id){
-                throw new IDAlreadyInUseException();
-            }
-        }
-        System.out.println("Ingrese el nombre del plan a agregar:");
-        String nombre = lector.readLine();
-        System.out.println("Ingrese el precio del plan a agregar:");
-        int precio = Integer.parseInt(lector.readLine());
-        System.out.println("Ingrese la valoracion del plan a agregar:");
-        double val = Double.parseDouble(lector.readLine());
-        boolean finalizado = false;
-        while (!finalizado){
-            System.out.println("Ingrese el tipo de plan a agregar, Cable (1) o Telefonia (2): ");
-            switch (Integer.parseInt(lector.readLine())) {
-                case 1 -> {
-                    System.out.println("Ingrese si el plan incluye canales HD, Si (S) o No (N)");
-                    boolean hd;
-                    String chk = lector.readLine();
-                    if (chk.equalsIgnoreCase("N")) {
-                        hd = false;
-                    } else if (chk.equalsIgnoreCase("S")) {
-                        hd = true;
-                    } else {
-                        System.out.println("Input invalido, predeterminando a falso");
-                        hd = false;
-                    }
-                    System.out.println("Ingrese la cantidad de canales que incluye el plan: ");
-                    int canales = Integer.parseInt(lector.readLine());
-                    PlanCable nuevoPlan = new PlanCable(id, nombre, precio, val, hd, canales);
-                    addPlan(nuevoPlan);
-                    finalizado = true;
-                }
-                case 2 -> {
-                    System.out.println("Ingrese si el plan incluye roaming ilimitado, Si (S) o No (N)");
-                    boolean roaming;
-                    String chk = lector.readLine();
-                    if (chk.equalsIgnoreCase("N")) {
-                        roaming = false;
-                    } else if (chk.equalsIgnoreCase("S")) {
-                        roaming = true;
-                    } else {
-                        System.out.println("Input invalido, predeterminando a falso");
-                        roaming = false;
-                    }
-                    System.out.println("Ingrese la cantidad de minutos que incluye el plan: ");
-                    int minutos = Integer.parseInt(lector.readLine());
-                    PlanTelefonia nuevoPlan = new PlanTelefonia(id, nombre, precio, val, roaming, minutos);
-                    addPlan(nuevoPlan);
-                    finalizado = true;
-                }
-                default -> System.out.println("Valor fuera de rango, intente de nuevo.");
-            }
-        }
-    }
-
+    //Funcion para mostrar todos los datos de un plan por pantalla
     public void printPlan(PlanEmpresa plan){
         if (plan == null){
             System.out.println("No existe un plan que cumpla con el parametro ingresado.");
             return;
         }
         System.out.println("-----------------------------");
-        if (plan.getClass().getSimpleName().equals("PlanCable")){
-            PlanCable planAux = (PlanCable) plan;
-            planAux.getPlan();
-            System.out.println("-----------------------------");
-        }else if (plan.getClass().getSimpleName().equals("PlanTelefonia")) {
-            PlanTelefonia planAux = (PlanTelefonia) plan;
-            planAux.getPlan();
-            System.out.println("-----------------------------");
-        }
-    }
-
-    public void eliminarPlan(byte id){
-        PlanEmpresa plan = buscarPlan(id);
-        if (plan != null){
-            listaPlanes.remove(plan);
-            System.out.println("Plan con ID " + id + " eliminado correctamente.");
-        }
-        else{
-            System.out.println("No se encontro un plan con el ID especificado.");
-        }
-    }
-
-    public void eliminarPlan(String nombre){
-        PlanEmpresa plan = buscarPlan(nombre);
-        if (plan != null){
-            listaPlanes.remove(plan);
-            System.out.println("Plan " + nombre + " eliminado correctamente.");
-        }
-        else{
-            System.out.println("No se encontro un plan con el nombre especificado.");
-        }
+        checkTipoPlanPrint(plan);
     }
 }
