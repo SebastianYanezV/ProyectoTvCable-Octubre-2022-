@@ -35,9 +35,7 @@ public class ProyectoTvCable
                         System.out.println("Nombre no encontrado.");
                     }
                 }
-                case 2 -> {
-                    mapa.exportarReporte();
-                }
+                case 2 -> mapa.exportarReporte();
                 case 3 -> salir = true;
                 default -> System.out.println("Numero fuera de rango, intente de nuevo.");
             }
