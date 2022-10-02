@@ -197,7 +197,14 @@ public class ListaPlanes {
                 System.out.println("2.Nombre");
                 System.out.println("3.Precio");
                 System.out.println("4.Valoracion");
-                System.out.println("5.Salir");
+                if (plan.getClass().getSimpleName().equals("PlanCable")){
+                    System.out.println("5.Disponibilidad HD");
+                    System.out.println("6.Cantidad Canales");
+                } else if (plan.getClass().getSimpleName().equals("PlanTelefonia")) {
+                    System.out.println("5.Disponibilidad Roaming");
+                    System.out.println("6.Minutos");
+                }
+                System.out.println("7.Salir");
                 opcion = Integer.parseInt(lector.readLine());
                 switch (opcion)
                 {
@@ -230,8 +237,44 @@ public class ListaPlanes {
                         }
                     }
                     case 5 -> {
-                        return;
+                        if (plan.getClass().getSimpleName().equals("PlanCable")){
+                            PlanCable aux = (PlanCable) plan;
+                            System.out.println("Ingrese la nueva disponibilidad de canales HD, Si (S) o No (N)");
+                            String chk = lector.readLine();
+                            if (chk.equalsIgnoreCase("N")) {
+                                 aux.setHd(false);
+                            } else if (chk.equalsIgnoreCase("S")) {
+                                aux.setHd(true);
+                            } else {
+                                System.out.println("Input invalido, predeterminando a falso");
+                                aux.setHd(false);
+                            }
+                        } else if (plan.getClass().getSimpleName().equals("PlanTelefonia")) {
+                            PlanTelefonia aux = (PlanTelefonia) plan;
+                            System.out.println("Ingrese la nueva disponibilidad de roaming, Si (S) o No (N)");
+                            String chk = lector.readLine();
+                            if (chk.equalsIgnoreCase("N")) {
+                                aux.setRoaming(false);
+                            } else if (chk.equalsIgnoreCase("S")) {
+                                aux.setRoaming(true);
+                            } else {
+                                System.out.println("Input invalido, predeterminando a falso");
+                                aux.setRoaming(false);
+                            }
+                        }
                     }
+                    case 6 -> {
+                        if (plan.getClass().getSimpleName().equals("PlanCable")){
+                            PlanCable aux = (PlanCable) plan;
+                            System.out.println("Ingrese la nueva cantidad de canales que incluye el plan: ");
+                            aux.setCanales(Integer.parseInt(lector.readLine()));
+                        } else if (plan.getClass().getSimpleName().equals("PlanTelefonia")) {
+                            PlanTelefonia aux = (PlanTelefonia) plan;
+                            System.out.println("Ingrese la nueva cantidad de minutos que incluye el plan: ");
+                            aux.setMinutos(Integer.parseInt(lector.readLine()));
+                        }
+                    }
+                    case 7 -> {return;}
                 }
             }
         }
@@ -244,7 +287,6 @@ public class ListaPlanes {
         System.out.println("-----------------------------");
         for (PlanEmpresa plan : a)
         {
-            System.out.println("-----------------------------");
             if (plan.getClass().getSimpleName().equals("PlanCable")){
                 PlanCable planAux = (PlanCable) plan;
                 planAux.getPlan();
@@ -271,8 +313,49 @@ public class ListaPlanes {
         int precio = Integer.parseInt(lector.readLine());
         System.out.println("Ingrese la valoracion del plan a agregar:");
         double val = Double.parseDouble(lector.readLine());
-        PlanEmpresa nuevoPlan = new PlanEmpresa(id, nombre, precio, val);
-        addPlan(nuevoPlan);
+        boolean finalizado = false;
+        while (!finalizado){
+            System.out.println("Ingrese el tipo de plan a agregar, Cable (1) o Telefonia (2): ");
+            switch (Integer.parseInt(lector.readLine())) {
+                case 1 -> {
+                    System.out.println("Ingrese si el plan incluye canales HD, Si (S) o No (N)");
+                    boolean hd;
+                    String chk = lector.readLine();
+                    if (chk.equalsIgnoreCase("N")) {
+                        hd = false;
+                    } else if (chk.equalsIgnoreCase("S")) {
+                        hd = true;
+                    } else {
+                        System.out.println("Input invalido, predeterminando a falso");
+                        hd = false;
+                    }
+                    System.out.println("Ingrese la cantidad de canales que incluye el plan: ");
+                    int canales = Integer.parseInt(lector.readLine());
+                    PlanCable nuevoPlan = new PlanCable(id, nombre, precio, val, hd, canales);
+                    addPlan(nuevoPlan);
+                    finalizado = true;
+                }
+                case 2 -> {
+                    System.out.println("Ingrese si el plan incluye roaming ilimitado, Si (S) o No (N)");
+                    boolean roaming;
+                    String chk = lector.readLine();
+                    if (chk.equalsIgnoreCase("N")) {
+                        roaming = false;
+                    } else if (chk.equalsIgnoreCase("S")) {
+                        roaming = true;
+                    } else {
+                        System.out.println("Input invalido, predeterminando a falso");
+                        roaming = false;
+                    }
+                    System.out.println("Ingrese la cantidad de minutos que incluye el plan: ");
+                    int minutos = Integer.parseInt(lector.readLine());
+                    PlanTelefonia nuevoPlan = new PlanTelefonia(id, nombre, precio, val, roaming, minutos);
+                    addPlan(nuevoPlan);
+                    finalizado = true;
+                }
+                default -> System.out.println("Valor fuera de rango, intente de nuevo.");
+            }
+        }
     }
 
     public void printPlan(PlanEmpresa plan){
@@ -281,11 +364,15 @@ public class ListaPlanes {
             return;
         }
         System.out.println("-----------------------------");
-        System.out.println("ID Plan: " + plan.getId());
-        System.out.println("Nombre Plan: " + plan.getNombre());
-        System.out.println("Precio: " + plan.getPrecio());
-        System.out.println("Valoracion de usuarios: " + plan.getValoracion());
-        System.out.println("-----------------------------");
+        if (plan.getClass().getSimpleName().equals("PlanCable")){
+            PlanCable planAux = (PlanCable) plan;
+            planAux.getPlan();
+            System.out.println("-----------------------------");
+        }else if (plan.getClass().getSimpleName().equals("PlanTelefonia")) {
+            PlanTelefonia planAux = (PlanTelefonia) plan;
+            planAux.getPlan();
+            System.out.println("-----------------------------");
+        }
     }
 
     public void eliminarPlan(byte id){

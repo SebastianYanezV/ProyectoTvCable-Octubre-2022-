@@ -50,6 +50,7 @@ public class MapaEmpresas {
                     }
                 }
             }
+            lector.close();
         }catch (FileNotFoundException e){
             System.out.println("Archivo no encontrado, intentando importar predeterminado");
             try{
@@ -80,6 +81,7 @@ public class MapaEmpresas {
                         }
                     }
                 }
+                lector.close();
             }catch(FileNotFoundException ee){
                 throw new DefaultFileMissingException();
             }
