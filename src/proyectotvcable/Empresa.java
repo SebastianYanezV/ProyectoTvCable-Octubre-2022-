@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class Empresa {
     private String nombre;
-    private ListaPlanes planes;
+    private ListaPlanes planes; //Variable que maneja los planes de la empresa
 
     public Empresa(String nombre) {
         this.nombre = nombre;
@@ -24,6 +24,7 @@ public class Empresa {
         return planes;
     }
 
+    //Menu en el que se aplican las distintas funcionalidades sobre la segunda coleccion anidada de objetos (planes)
     public void menuEmpresa(BufferedReader lector) throws IOException
     {
         int opcion;

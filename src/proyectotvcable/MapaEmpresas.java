@@ -18,6 +18,16 @@ public class MapaEmpresas {
         return m;
     }
 
+    //Funcion para mostrar todas las empresas disponibles en la aplicacion
+    public void listarEmpresas(){
+        int j = 1;
+        for (String i : this.mapaEmpresas.keySet())
+        {
+            System.out.println("Empresa "+ j++ + ": " + i);
+        }
+    }
+
+    //Funcion para importar un archivo. El usuario ingresa un archivo, si este no existe, se utiliza el predeterminado
     public void lecturaArchivo() throws IOException {
         BufferedReader lectorNombre = new BufferedReader(new InputStreamReader(System.in));
         String localDir = System.getProperty("user.dir");
@@ -103,6 +113,7 @@ public class MapaEmpresas {
         return escapedData;
     }
 
+    //Funcion para exportar los datos de la aplicacion a un archivo designado por el usuario
     public void exportarArchivo() throws IOException{
         BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Ingrese nombre del archivo al cual exportar: ");
@@ -141,14 +152,6 @@ public class MapaEmpresas {
             lineas.stream().map(this::convertToCSV).forEach(pw::println);
         }
         assert(csv.exists());
-    }
-
-    public void listarEmpresas(){
-        int j = 1;
-        for (String i : this.mapaEmpresas.keySet())
-        {
-            System.out.println("Empresa "+ j++ + ": " + i);
-        }
     }
 
     public void exportarReporte() throws IOException {
