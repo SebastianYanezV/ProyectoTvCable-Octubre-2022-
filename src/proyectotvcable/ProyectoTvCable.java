@@ -20,7 +20,8 @@ public class ProyectoTvCable
         boolean salir = false;
         while (!salir) {
             System.out.println("1.Empresas");
-            System.out.println("2.Salir");
+            System.out.println("2.Exportar Reporte");
+            System.out.println("3.Salir");
             opcion = Integer.parseInt(lector.readLine());
             switch (opcion) {
                 case 1 -> {
@@ -34,7 +35,10 @@ public class ProyectoTvCable
                         System.out.println("Nombre no encontrado.");
                     }
                 }
-                case 2 -> salir = true;
+                case 2 -> {
+                    mapa.exportarReporte();
+                }
+                case 3 -> salir = true;
                 default -> System.out.println("Numero fuera de rango, intente de nuevo.");
             }
         }

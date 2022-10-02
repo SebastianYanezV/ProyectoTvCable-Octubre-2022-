@@ -107,12 +107,11 @@ public class MapaEmpresas {
         String nombreArchivo = lector.readLine() + ".csv";
         ArrayList<String[]> lineas = new ArrayList<>();
         ArrayList<Empresa> empresas = new ArrayList<>(this.mapaEmpresas.values());
-        for (int i = 0; i < empresas.size(); i++){
-            for (int j = 0; j < empresas.get(i).getPlanes().getListaPlanes().size(); j++){
-                if(empresas.get(i).getPlanes().getListaPlanes().get(j).getClass().getSimpleName().equals("PlanTelefonia"))
-                {
-                    PlanTelefonia aux = (PlanTelefonia) empresas.get(i).getPlanes().getListaPlanes().get(j);
-                    lineas.add(new String[]{ empresas.get(i).getNombre(),
+        for (Empresa empresa : empresas) {
+            for (int j = 0; j < empresa.getPlanes().getListaPlanes().size(); j++) {
+                if (empresa.getPlanes().getListaPlanes().get(j).getClass().getSimpleName().equals("PlanTelefonia")) {
+                    PlanTelefonia aux = (PlanTelefonia) empresa.getPlanes().getListaPlanes().get(j);
+                    lineas.add(new String[]{empresa.getNombre(),
                             String.valueOf(aux.getId()),
                             aux.getNombre(),
                             String.valueOf(aux.getPrecio()),
@@ -121,10 +120,9 @@ public class MapaEmpresas {
                             String.valueOf(aux.isRoaming()),
                             String.valueOf(aux.getMinutos())
                     });
-                }
-                else if (empresas.get(i).getPlanes().getListaPlanes().get(j).getClass().getSimpleName().equals("PlanCable")){
-                    PlanCable aux = (PlanCable) empresas.get(i).getPlanes().getListaPlanes().get(j);
-                    lineas.add(new String[]{ empresas.get(i).getNombre(),
+                } else if (empresa.getPlanes().getListaPlanes().get(j).getClass().getSimpleName().equals("PlanCable")) {
+                    PlanCable aux = (PlanCable) empresa.getPlanes().getListaPlanes().get(j);
+                    lineas.add(new String[]{empresa.getNombre(),
                             String.valueOf(aux.getId()),
                             aux.getNombre(),
                             String.valueOf(aux.getPrecio()),
@@ -149,5 +147,50 @@ public class MapaEmpresas {
         {
             System.out.println("Empresa "+ j++ + ": " + i);
         }
+    }
+
+    public void exportarReporte() throws IOException {
+        BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Ingrese nombre del archivo al cual exportar: ");
+        String nombreArchivo = lector.readLine() + ".txt";
+        ArrayList<Empresa> empresas = new ArrayList<>(this.mapaEmpresas.values());
+        File txt = new File(nombreArchivo);
+        PrintWriter print = new PrintWriter(txt);
+        for (Empresa empresa : empresas){
+            print.printf("Planes ");
+            print.printf("%s" + ":" + "%n", empresa.getNombre());
+            ArrayList<PlanEmpresa> planes = empresa.getPlanes().getListaPlanes();
+            for (PlanEmpresa plan : planes){
+                if (plan.getClass().getSimpleName().equals("PlanCable")){
+                    PlanCable aux = (PlanCable) plan;
+                    print.printf("Tipo Plan: Cable" + "%n");
+                    print.printf("ID: " + "%s" + "%n", aux.getId());
+                    print.printf("Nombre: " + "%s" + "%n", aux.getNombre());
+                    print.printf("Precio: " + "%s" + "%n", aux.getPrecio());
+                    print.printf("Valoracion: " + "%s" + "%n", aux.getValoracion());
+                    if (aux.isHd()){
+                        print.printf("Incluye Canales en HD " + "%n");
+                    }else{
+                        print.printf("No Incluye Canales en HD" + "%n");
+                    }
+                    print.printf("Cantidad de canales: " + "%s" + "%n", aux.getCanales());
+                }else if (plan.getClass().getSimpleName().equals("PlanTelefonia")){
+                    PlanTelefonia aux = (PlanTelefonia) plan;
+                    print.printf("Tipo Plan: Telefonia" + "%n");
+                    print.printf("ID: " + "%s" + "%n", aux.getId());
+                    print.printf("Nombre: " + "%s" + "%n", aux.getNombre());
+                    print.printf("Precio: " + "%s" + "%n", aux.getPrecio());
+                    print.printf("Valoracion: " + "%s" + "%n", aux.getValoracion());
+                    if (aux.isRoaming()){
+                        print.printf("Incluye Roaming Ilimitado " + "%n");
+                    }else{
+                        print.printf("No Incluye Roaming Ilimitado" + "%n");
+                    }
+                    print.printf("Minutos: " + "%s" + "%n", aux.getMinutos());
+                }
+            }
+            print.printf("-----------------------" + "%n");
+        }
+        print.close();
     }
 }
